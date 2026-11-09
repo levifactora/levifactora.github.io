@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drift Scorecard | Levi</title>
+<meta name="description" content="A free Mac tool that compares AI video clips with a reference picture and marks each one PASS, UNSURE or FAIL.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231f5c4a'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' fill='%23f6f3ec' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/site.js" defer></script>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="name" href="../index.html">Levi</a>
+    <nav aria-label="Main">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="wrap narrow">
+  <div class="case-head">
+    <a class="back" href="../index.html#projects">&larr; All projects</a>
+    <h1>Drift Scorecard</h1>
+    <p class="lede">A free Mac tool that compares AI video clips with a reference picture and marks each one PASS, UNSURE or FAIL.</p>
+    <p class="status">Public on <a href="https://github.com/levifactora/drift-scorecard">GitHub</a></p>
+  </div>
+
+  <figure class="demo">
+    <div class="demo-frame">
+      <video controls playsinline preload="metadata" src="../videos/drift-scorecard.mp4"></video>
+    </div>
+    <figcaption>60-second demo of an earlier version, with made-up practice clips. It doesn&rsquo;t show the new report or Mac app, and its results slide is from that version. Current results are below.</figcaption>
+  </figure>
+
+  <div class="story">
+    <section>
+      <h2>The problem</h2>
+      <p>AI video can look right in the first frame, then slowly move away from the look of the series. I wanted a way to measure that automatically.</p>
+    </section>
+    <section>
+      <h2>What I built</h2>
+      <p>Drift Scorecard measures saturation, brightness, background and overall look against a reference picture. It checks a whole folder at once: 31 clips took about 4 seconds on my Mac. Clips just outside a limit are marked UNSURE, so a person decides.</p>
+      <ul>
+        <li><strong>A one-file report that works offline.</strong> Drag a limit slider and every result, graph and count updates at once.</li>
+        <li><strong>Quick review.</strong> Hover over a clip to play through its frames, or drag across it to compare it with the reference.</li>
+        <li><strong>Checks itself against you.</strong> Press Keep or Redo on clips and see how well the current limits agree with your decisions.</li>
+        <li><strong>A Mac app.</strong> Drag in a picture and a folder, and watch a progress bar. The report also has filters, search, keyboard shortcuts, CSV export, and light and dark themes.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>What broke</h2>
+      <ul>
+        <li>In the first version, the default limits rejected two clips I had approved.</li>
+        <li>Most clips were redos, so marking every clip for a redo would score 27 of 31. A raw accuracy number would have flattered the tool.</li>
+        <li>File handling can look like drift. During development, a test video with no color label measured 83% saturation against its own source picture.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>What changed</h2>
+      <ul>
+        <li>I tried lowering the background limit to 60%. That accepted every approved clip, but also let five redo clips through.</li>
+        <li>Those five were rejected mostly for problems this version can&rsquo;t see, such as objects or characters changing shape or appearance. That shows what to build next.</li>
+        <li>I added the UNSURE result, which cut clear mistakes on the standard limits from 3 to 2 by sending borderline clips to a person.</li>
+        <li>Checking five frames instead of three, and adding overall look at its standard limit, changed no results on this episode.</li>
+        <li>With the correct color label, the test video measured 99.7%, so I fixed the test video rather than loosening the limits.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Real results</h2>
+      <p>I ran it on all 31 clips from one episode of a real AI-generated video series, scored against the same reference picture. Then I compared each result with my own production decision: 4 clips were approved and 27 were marked for a redo.</p>
+      <table class="results">
+        <thead>
+          <tr><th scope="col">Limits</th><th scope="col">Approved clips (4)</th><th scope="col">Redo clips (27)</th><th scope="col">Clearly right</th><th scope="col">Clearly wrong</th><th scope="col">Left to a person</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Standard</th><td data-label="Approved clips (4)">2 passed, 1 unsure, 1 failed</td><td data-label="Redo clips (27)">24 failed, 2 unsure, 1 passed</td><td data-label="Clearly right">26 of 31</td><td data-label="Clearly wrong">2 of 31</td><td data-label="Left to a person">3 of 31</td></tr>
+          <tr><th scope="row">Cartoon preset (best case)</th><td data-label="Approved clips (4)">4 passed</td><td data-label="Redo clips (27)">24 failed, 3 passed</td><td data-label="Clearly right">28 of 31</td><td data-label="Clearly wrong">3 of 31</td><td data-label="Left to a person">0 of 31</td></tr>
+        </tbody>
+      </table>
+      <p>The cartoon preset&rsquo;s limits were chosen after seeing these clips, so that row is a best case and still needs a test on new footage.</p>
+      <p>It caught the long slide in quality: a run of later clips failed, matching the fading and changed settings in my production notes. But marking every clip for a redo would score 27 of 31, so this is a first filter that shows where to look, not a replacement for review.</p>
+      <p><strong>Limits of this test:</strong> this is one episode from one creator, with only four approved clips. Some redo decisions used earlier color and background checks that work much like this tool, so the comparison isn&rsquo;t fully independent. The approved clips were also re-rendered later than the others, which may affect their scores. The tool measures color, background and general resemblance only, so a person still needs to review each clip.</p>
+    </section>
+  </div>
+</div>
+
+<div class="next">
+  <div class="wrap narrow"><p><a href="../index.html#projects">Back to all projects &rarr;</a></p></div>
+</div>
+</main>
+<footer class="site-foot">
+  <div class="wrap">Every number on this site is real and measured. If a result isn&rsquo;t known yet, it isn&rsquo;t shown.</div>
+</footer>
+</body>
+</html>
